@@ -35,10 +35,7 @@ const addTelecaller = async (req, res) => {
     let imageName = null;
     if (req.file) {
       imageName = req.file.filename;
-      const imagePath = path.join(__dirname, "../public", imageName);
-
-      // Move the uploaded file to /public
-      await fs.promises.rename(req.file.path, imagePath);
+      // File is already stored in /uploads by multer; no need to move
     }
 
     const newTelecaller = new Telecaller({
@@ -53,7 +50,7 @@ const addTelecaller = async (req, res) => {
     await newTelecaller.save();
 
     const profileimageURL = imageName
-      ? `${process.env.BASE_URL}/public/${imageName}`
+      ? `${process.env.BASE_URL}/uploads/${imageName}`
       : null;
 
     res.status(201).json({
@@ -135,16 +132,16 @@ const updateTelecallerByAdmin = async (req, res) => {
     if (image) {
       updateData.profileimage = image;
 
-      // Delete old image
+      // Delete old image from uploads
       if (existingTelecaller.profileimage) {
-        const oldPath = path.join(__dirname, "../public", existingTelecaller.profileimage);
+        const oldPath = path.join(__dirname, "../uploads", existingTelecaller.profileimage);
         if (fs.existsSync(oldPath)) {
           fs.unlinkSync(oldPath);
         }
       }
 
-      // Move new image
-      const newPath = path.join(__dirname, "../public", image);
+      // Ensure new image remains in uploads (multer already saved it there)
+      const newPath = path.join(__dirname, "../uploads", image);
       if (req.file.path !== newPath) {
         await fs.promises.rename(req.file.path, newPath);
       }
@@ -153,7 +150,7 @@ const updateTelecallerByAdmin = async (req, res) => {
     const updatedTelecaller = await Telecaller.findByIdAndUpdate(id, updateData, { new: true });
 
     const profileimageUrl = updatedTelecaller.profileimage
-      ? `${BASE_URL}/public/${updatedTelecaller.profileimage}`
+      ? `${BASE_URL}/uploads/${updatedTelecaller.profileimage}`
       : null;
 
     res.json({
