@@ -45,7 +45,7 @@ const defaultAllowedOrigins = [
   "http://127.0.0.1:3001",
   "http://localhost:5173", // Vite default
   "http://localhost:4200", // Angular default
-  "https://shhcrmtelecallers.netlify.app/",
+  "https://shhcrmtelecallers.netlify.app",
 ];
 const allowedOrigins = Array.from(new Set([...defaultAllowedOrigins, ...envOrigins]));
 
