@@ -33,18 +33,43 @@ connectDB();
 const app = express();
 
 // Configure CORS properly with specific options
-app.use(
-  cors({
-    origin: [
-      "http://localhost:3000",
-      "http://localhost:3001",
-      "https://admin.saihustlehub.com",
-      "https://telecaller.saihustlehub.com",
-    ],
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true,
-  })
-);
+// Build a robust whitelist that supports localhost and your domains
+const envOrigins = (process.env.CORS_ORIGINS || "")
+  .split(",")
+  .map((o) => o.trim())
+  .filter(Boolean);
+const defaultAllowedOrigins = [
+  "http://localhost:3000",
+  "http://localhost:3001",
+  "http://127.0.0.1:3000",
+  "http://127.0.0.1:3001",
+  "http://localhost:5173", // Vite default
+  "http://localhost:4200", // Angular default
+  "https://shhcrmtelecallers.netlify.app/",
+];
+const allowedOrigins = Array.from(new Set([...defaultAllowedOrigins, ...envOrigins]));
+
+const corsOptions = {
+  origin: (origin, callback) => {
+    // Allow non-browser requests (like curl/postman) where origin may be undefined
+    if (!origin) return callback(null, true);
+
+    const isLocalhost = /^http:\/\/(localhost|127\\.0\\.0\\.1)(:\\d+)?$/.test(origin);
+    const isSaiHustleSubdomain = /^https:\/\/([a-z0-9-]+\\.)?saihustlehub\\.com$/.test(origin);
+
+    if (allowedOrigins.includes(origin) || isLocalhost || isSaiHustleSubdomain) {
+      return callback(null, true);
+    }
+    return callback(new Error("Not allowed by CORS"));
+  },
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+  optionsSuccessStatus: 204,
+};
+
+app.use(cors(corsOptions));
+// Explicitly handle preflight requests for all routes
+app.options("*", cors(corsOptions));
 
 // Security and optimization middleware
 app.use(helmet());
@@ -68,6 +93,8 @@ app.use(
     saveUninitialized: false,
     cookie: {
       secure: process.env.NODE_ENV === "production",
+      // Allow cross-site cookies when using different domains in production
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
       maxAge: 24 * 60 * 60 * 1000, // 24 hours
     },
   })
