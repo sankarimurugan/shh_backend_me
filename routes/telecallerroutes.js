@@ -10,6 +10,10 @@ const { authMiddleware } = require('../middlewares/authmiddleware');
 
 const router = express.Router()
 
+
+
+
+
 const storage = multer.diskStorage({
     destination: "./public",
     filename: (req, file, cb) => {
