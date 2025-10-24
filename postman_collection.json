@@ -1,0 +1,261 @@
+{
+  "info": {
+    "name": "Admin CRM BD API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Admin Register",
+          "request": {
+            "method": "POST",
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "profileimage", "type": "file", "src": "" },
+                { "key": "name", "type": "text", "value": "" },
+                { "key": "email", "type": "text", "value": "" },
+                { "key": "password", "type": "text", "value": "" }
+              ]
+            },
+            "url": { "raw": "{{baseUrl}}/api/auth/admin/register", "host": ["{{baseUrl}}"], "path": ["api","auth","admin","register"] }
+          }
+        },
+        {
+          "name": "Admin Update",
+          "request": {
+            "method": "PUT",
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "image", "type": "file", "src": "" },
+                { "key": "name", "type": "text", "value": "" },
+                { "key": "email", "type": "text", "value": "" }
+              ]
+            },
+            "url": { "raw": "{{baseUrl}}/api/auth/admin/update/{{adminId}}", "host": ["{{baseUrl}}"], "path": ["api","auth","admin","update","{{adminId}}"], "variable": [{"key":"adminId","value":""}] }
+          }
+        },
+        {
+          "name": "Admin Login",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": { "mode": "raw", "raw": "{\n  \"email\": \"\",\n  \"password\": \"\"\n}" },
+            "url": { "raw": "{{baseUrl}}/api/auth/admin/login", "host": ["{{baseUrl}}"], "path": ["api","auth","admin","login"] }
+          }
+        },
+        {
+          "name": "Admin Send OTP",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": { "mode": "raw", "raw": "{\n  \"email\": \"\"\n}" },
+            "url": { "raw": "{{baseUrl}}/api/auth/admin/send-otp", "host": ["{{baseUrl}}"], "path": ["api","auth","admin","send-otp"] }
+          }
+        },
+        {
+          "name": "Admin Verify OTP",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": { "mode": "raw", "raw": "{\n  \"email\": \"\",\n  \"otp\": \"\"\n}" },
+            "url": { "raw": "{{baseUrl}}/api/auth/admin/verify-otp", "host": ["{{baseUrl}}"], "path": ["api","auth","admin","verify-otp"] }
+          }
+        },
+        {
+          "name": "Admin Reset Password",
+          "request": {
+            "method": "POST",
+            "url": { "raw": "{{baseUrl}}/api/auth/admin/reset-password/{{email}}", "host": ["{{baseUrl}}"], "path": ["api","auth","admin","reset-password","{{email}}"], "variable": [{"key":"email","value":""}] }
+          }
+        },
+        {
+          "name": "Get Admin Profile",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/auth/admin/{{adminId}}", "host": ["{{baseUrl}}"], "path": ["api","auth","admin","{{adminId}}"], "variable": [{"key":"adminId","value":""}] }
+          }
+        },
+        {
+          "name": "Admin Logout",
+          "request": { "method": "POST", "url": { "raw": "{{baseUrl}}/api/auth/admin/logout", "host": ["{{baseUrl}}"], "path": ["api","auth","admin","logout"] } }
+        },
+        {
+          "name": "Telecaller Add",
+          "request": {
+            "method": "POST",
+            "body": { "mode": "formdata", "formdata": [ { "key": "image", "type": "file", "src": "" }, { "key": "name", "type": "text", "value": "" }, { "key": "email", "type": "text", "value": "" }, { "key": "password", "type": "text", "value": "" }, { "key": "phone", "type": "text", "value": "" } ] },
+            "url": { "raw": "{{baseUrl}}/api/telecallers/addtelecaller", "host": ["{{baseUrl}}"], "path": ["api","telecallers","addtelecaller"] }
+          }
+        },
+        {
+          "name": "Telecaller Login",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": { "mode": "raw", "raw": "{\n  \"email\": \"\",\n  \"password\": \"\"\n}" },
+            "url": { "raw": "{{baseUrl}}/api/telecallers/logintelecaller", "host": ["{{baseUrl}}"], "path": ["api","telecallers","logintelecaller"] }
+          }
+        },
+        { "name": "Telecaller Logout", "request": { "method": "POST", "url": { "raw": "{{baseUrl}}/api/telecallers/logout", "host": ["{{baseUrl}}"], "path": ["api","telecallers","logout"] } } },
+        { "name": "Telecaller Send OTP", "request": { "method": "POST", "header": [ { "key": "Content-Type", "value": "application/json" } ], "body": { "mode": "raw", "raw": "{\n  \"email\": \"\"\n}" }, "url": { "raw": "{{baseUrl}}/api/telecallers/telecaller/send-otp", "host": ["{{baseUrl}}"], "path": ["api","telecallers","telecaller","send-otp"] } } },
+        { "name": "Telecaller Verify OTP", "request": { "method": "POST", "header": [ { "key": "Content-Type", "value": "application/json" } ], "body": { "mode": "raw", "raw": "{\n  \"email\": \"\",\n  \"otp\": \"\"\n}" }, "url": { "raw": "{{baseUrl}}/api/telecallers/telecaller/verify-otp", "host": ["{{baseUrl}}"], "path": ["api","telecallers","telecaller","verify-otp"] } } },
+        { "name": "Telecaller Reset Password", "request": { "method": "POST", "url": { "raw": "{{baseUrl}}/api/telecallers/telecaller/reset-password/{{email}}", "host": ["{{baseUrl}}"], "path": ["api","telecallers","telecaller","reset-password","{{email}}"], "variable": [{"key":"email","value":""}] } } }
+      ]
+    },
+    {
+      "name": "Leads",
+      "item": [
+        { "name": "Get All Leads", "request": { "method": "GET", "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ], "url": { "raw": "{{baseUrl}}/api/leads", "host": ["{{baseUrl}}"], "path": ["api","leads"] } } },
+        { "name": "Create Lead", "request": { "method": "POST", "header": [ { "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" } ], "body": { "mode": "raw", "raw": "{}" }, "url": { "raw": "{{baseUrl}}/api/leads", "host": ["{{baseUrl}}"], "path": ["api","leads"] } } },
+        { "name": "Get Lead By ID", "request": { "method": "GET", "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ], "url": { "raw": "{{baseUrl}}/api/leads/{{id}}", "host": ["{{baseUrl}}"], "path": ["api","leads","{{id}}"], "variable": [{"key":"id","value":""}] } } },
+        { "name": "Update Lead", "request": { "method": "PUT", "header": [ { "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" } ], "body": { "mode": "raw", "raw": "{}" }, "url": { "raw": "{{baseUrl}}/api/leads/{{id}}", "host": ["{{baseUrl}}"], "path": ["api","leads","{{id}}"], "variable": [{"key":"id","value":""}] } } },
+        { "name": "Delete Lead", "request": { "method": "DELETE", "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ], "url": { "raw": "{{baseUrl}}/api/leads/{{id}}", "host": ["{{baseUrl}}"], "path": ["api","leads","{{id}}"], "variable": [{"key":"id","value":""}] } } },
+        { "name": "Assign Lead to Telecaller", "request": { "method": "POST", "header": [ { "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" } ], "body": { "mode": "raw", "raw": "{\n  \"leadId\": \"\",\n  \"telecallerId\": \"\"\n}" }, "url": { "raw": "{{baseUrl}}/api/leads/assign", "host": ["{{baseUrl}}"], "path": ["api","leads","assign"] } } }
+      ]
+    },
+    {
+      "name": "Lead Manage",
+      "item": [
+        { "name": "Add Lead Manage", "request": { "method": "POST", "header": [ { "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" } ], "body": { "mode": "raw", "raw": "{}" }, "url": { "raw": "{{baseUrl}}/api/lead/addleadmanage", "host": ["{{baseUrl}}"], "path": ["api","lead","addleadmanage"] } } },
+        { "name": "Get Lead Manage By ID", "request": { "method": "GET", "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ], "url": { "raw": "{{baseUrl}}/api/lead/getlead/{{id}}", "host": ["{{baseUrl}}"], "path": ["api","lead","getlead","{{id}}"], "variable": [{"key":"id","value":""}] } } },
+        { "name": "Edit Lead Manage", "request": { "method": "PUT", "header": [ { "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" } ], "body": { "mode": "raw", "raw": "{}" }, "url": { "raw": "{{baseUrl}}/api/lead/editlead/{{id}}", "host": ["{{baseUrl}}"], "path": ["api","lead","editlead","{{id}}"], "variable": [{"key":"id","value":""}] } } },
+        { "name": "Delete Lead Manage", "request": { "method": "DELETE", "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ], "url": { "raw": "{{baseUrl}}/api/lead/delete/{{id}}", "host": ["{{baseUrl}}"], "path": ["api","lead","delete","{{id}}"], "variable": [{"key":"id","value":""}] } } },
+        { "name": "Get All Leads (Telecaller)", "request": { "method": "GET", "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ], "url": { "raw": "{{baseUrl}}/api/lead/getAlllead", "host": ["{{baseUrl}}"], "path": ["api","lead","getAlllead"] } } },
+        { "name": "Get All Leads (Admin)", "request": { "method": "GET", "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ], "url": { "raw": "{{baseUrl}}/api/lead/admin/getAllLeads", "host": ["{{baseUrl}}"], "path": ["api","lead","admin","getAllLeads"] } } },
+        { "name": "Get Leads by Telecaller ID", "request": { "method": "GET", "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ], "url": { "raw": "{{baseUrl}}/api/lead/leads/telecaller/{{telecallerId}}", "host": ["{{baseUrl}}"], "path": ["api","lead","leads","telecaller","{{telecallerId}}"], "variable": [{"key":"telecallerId","value":""}] } } },
+        { "name": "Debug Lead Assignments", "request": { "method": "GET", "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ], "url": { "raw": "{{baseUrl}}/api/lead/debug-assignments", "host": ["{{baseUrl}}"], "path": ["api","lead","debug-assignments"] } } },
+        { "name": "Bulk Upload Leads", "request": { "method": "POST", "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ], "body": { "mode": "formdata", "formdata": [ { "key": "file", "type": "file", "src": "" } ] }, "url": { "raw": "{{baseUrl}}/api/lead/bulk-upload", "host": ["{{baseUrl}}"], "path": ["api","lead","bulk-upload"] } } }
+      ]
+    },
+    {
+      "name": "Telecallers",
+      "item": [
+        { "name": "Get All Telecallers", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/telecallers/getalltelecallers", "host": ["{{baseUrl}}"], "path": ["api","telecallers","getalltelecallers"] } } },
+        { "name": "Get Telecaller By ID", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/telecallers/telecallers/{{id}}", "host": ["{{baseUrl}}"], "path": ["api","telecallers","telecallers","{{id}}"], "variable": [{"key":"id","value":""}] } } },
+        { "name": "Edit Telecaller", "request": { "method": "PUT", "body": { "mode": "formdata", "formdata": [ { "key": "image", "type": "file", "src": "" }, { "key": "name", "type": "text", "value": "" }, { "key": "email", "type": "text", "value": "" }, { "key": "phone", "type": "text", "value": "" } ] }, "url": { "raw": "{{baseUrl}}/api/telecallers/edittelecallers/{{id}}", "host": ["{{baseUrl}}"], "path": ["api","telecallers","edittelecallers","{{id}}"], "variable": [{"key":"id","value":""}] } } },
+        { "name": "Delete Telecaller", "request": { "method": "DELETE", "url": { "raw": "{{baseUrl}}/api/telecallers/telecallers/{{id}}", "host": ["{{baseUrl}}"], "path": ["api","telecallers","telecallers","{{id}}"], "variable": [{"key":"id","value":""}] } } },
+        { "name": "Login Telecaller (Alt)", "request": { "method": "POST", "header": [ { "key": "Content-Type", "value": "application/json" } ], "body": { "mode": "raw", "raw": "{\n  \"email\": \"\",\n  \"password\": \"\"\n}" }, "url": { "raw": "{{baseUrl}}/api/telecallers/addlogintelecaller", "host": ["{{baseUrl}}"], "path": ["api","telecallers","addlogintelecaller"] } } }
+      ]
+    },
+    {
+      "name": "Source",
+      "item": [
+        { "name": "Add Source", "request": { "method": "POST", "header": [ { "key": "Content-Type", "value": "application/json" } ], "body": { "mode": "raw", "raw": "{\n  \"name\": \"\"\n}" }, "url": { "raw": "{{baseUrl}}/api/source/sourcename", "host": ["{{baseUrl}}"], "path": ["api","source","sourcename"] } } },
+        { "name": "Get Sources", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/source/sourceget", "host": ["{{baseUrl}}"], "path": ["api","source","sourceget"] } } },
+        { "name": "Get Source By ID", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/source/sourceget/{{id}}", "host": ["{{baseUrl}}"], "path": ["api","source","sourceget","{{id}}"], "variable": [{"key":"id","value":""}] } } },
+        { "name": "Edit Source", "request": { "method": "PUT", "header": [ { "key": "Content-Type", "value": "application/json" } ], "body": { "mode": "raw", "raw": "{\n  \"name\": \"\"\n}" }, "url": { "raw": "{{baseUrl}}/api/source/sourceedit/{{id}}", "host": ["{{baseUrl}}"], "path": ["api","source","sourceedit","{{id}}"], "variable": [{"key":"id","value":""}] } } },
+        { "name": "Delete Source", "request": { "method": "DELETE", "url": { "raw": "{{baseUrl}}/api/source/sourcedelete/{{id}}", "host": ["{{baseUrl}}"], "path": ["api","source","sourcedelete","{{id}}"], "variable": [{"key":"id","value":""}] } } }
+      ]
+    },
+    {
+      "name": "Amount",
+      "item": [
+        { "name": "Add Mode of Amount", "request": { "method": "POST", "header": [ { "key": "Content-Type", "value": "application/json" } ], "body": { "mode": "raw", "raw": "{\n  \"mode\": \"\"\n}" }, "url": { "raw": "{{baseUrl}}/api/amount/modeamount", "host": ["{{baseUrl}}"], "path": ["api","amount","modeamount"] } } },
+        { "name": "Get Amounts", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/amount/getamount", "host": ["{{baseUrl}}"], "path": ["api","amount","getamount"] } } },
+        { "name": "Edit Amount", "request": { "method": "PUT", "header": [ { "key": "Content-Type", "value": "application/json" } ], "body": { "mode": "raw", "raw": "{\n  \"mode\": \"\"\n}" }, "url": { "raw": "{{baseUrl}}/api/amount/editamount/{{id}}", "host": ["{{baseUrl}}"], "path": ["api","amount","editamount","{{id}}"], "variable": [{"key":"id","value":""}] } } },
+        { "name": "Delete Amount", "request": { "method": "DELETE", "url": { "raw": "{{baseUrl}}/api/amount/deleteamount/{{id}}", "host": ["{{baseUrl}}"], "path": ["api","amount","deleteamount","{{id}}"], "variable": [{"key":"id","value":""}] } } }
+      ]
+    },
+    {
+      "name": "Courses",
+      "item": [
+        { "name": "Add Course", "request": { "method": "POST", "header": [ { "key": "Content-Type", "value": "application/json" } ], "body": { "mode": "raw", "raw": "{\n  \"name\": \"\"\n}" }, "url": { "raw": "{{baseUrl}}/api/course/addcourse", "host": ["{{baseUrl}}"], "path": ["api","course","addcourse"] } } },
+        { "name": "Get Courses", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/course/getcourse", "host": ["{{baseUrl}}"], "path": ["api","course","getcourse"] } } },
+        { "name": "Edit Course", "request": { "method": "PUT", "header": [ { "key": "Content-Type", "value": "application/json" } ], "body": { "mode": "raw", "raw": "{\n  \"name\": \"\"\n}" }, "url": { "raw": "{{baseUrl}}/api/course/editcourse/{{id}}", "host": ["{{baseUrl}}"], "path": ["api","course","editcourse","{{id}}"], "variable": [{"key":"id","value":""}] } } },
+        { "name": "Delete Course", "request": { "method": "DELETE", "url": { "raw": "{{baseUrl}}/api/course/deletecourse/{{id}}", "host": ["{{baseUrl}}"], "path": ["api","course","deletecourse","{{id}}"], "variable": [{"key":"id","value":""}] } } }
+      ]
+    },
+    {
+      "name": "Payments",
+      "item": [
+        { "name": "Create Payment", "request": { "method": "POST", "header": [ { "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" } ], "body": { "mode": "raw", "raw": "{}" }, "url": { "raw": "{{baseUrl}}/api/payments/payment", "host": ["{{baseUrl}}"], "path": ["api","payments","payment"] } } },
+        { "name": "Get Payments", "request": { "method": "GET", "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ], "url": { "raw": "{{baseUrl}}/api/payments/getpayment", "host": ["{{baseUrl}}"], "path": ["api","payments","getpayment"] } } },
+        { "name": "Get Payment By ID", "request": { "method": "GET", "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ], "url": { "raw": "{{baseUrl}}/api/payments/getpayment/{{id}}", "host": ["{{baseUrl}}"], "path": ["api","payments","getpayment","{{id}}"], "variable": [{"key":"id","value":""}] } } },
+        { "name": "Get Payment Details By ID or Name", "request": { "method": "GET", "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ], "url": { "raw": "{{baseUrl}}/api/payments/detailsgetpaymentid/{{id}}", "host": ["{{baseUrl}}"], "path": ["api","payments","detailsgetpaymentid","{{id}}"], "variable": [{"key":"id","value":""}] } } },
+        { "name": "Edit Payment", "request": { "method": "PUT", "header": [ { "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" } ], "body": { "mode": "raw", "raw": "{}" }, "url": { "raw": "{{baseUrl}}/api/payments/editpayment/{{id}}", "host": ["{{baseUrl}}"], "path": ["api","payments","editpayment","{{id}}"], "variable": [{"key":"id","value":""}] } } },
+        { "name": "Delete Payment", "request": { "method": "DELETE", "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ], "url": { "raw": "{{baseUrl}}/api/payments/deletepayment/{{id}}", "host": ["{{baseUrl}}"], "path": ["api","payments","deletepayment","{{id}}"], "variable": [{"key":"id","value":""}] } } },
+        { "name": "Get Payment by ID (Alt Path)", "request": { "method": "GET", "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ], "url": { "raw": "{{baseUrl}}/api/payments/payment/id/{{id}}", "host": ["{{baseUrl}}"], "path": ["api","payments","payment","id","{{id}}"], "variable": [{"key":"id","value":""}] } } }
+      ]
+    },
+    {
+      "name": "Payment Proof",
+      "item": [
+        { "name": "Get Lead with Payment Proof", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/proof/lead/{{id}}/paymentproof", "host": ["{{baseUrl}}"], "path": ["api","proof","lead","{{id}}","paymentproof"], "variable": [{"key":"id","value":""}] } } }
+      ]
+    },
+    {
+      "name": "Telepay",
+      "item": [
+        { "name": "Add Telepay Proof", "request": { "method": "POST", "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ], "body": { "mode": "formdata", "formdata": [ { "key": "image", "type": "file", "src": "" }, { "key": "leadId", "type": "text", "value": "" } ] }, "url": { "raw": "{{baseUrl}}/api/telepay/addtelecaller", "host": ["{{baseUrl}}"], "path": ["api","telepay","addtelecaller"] } } },
+        { "name": "View Telepay (Telecaller)", "request": { "method": "GET", "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ], "url": { "raw": "{{baseUrl}}/api/telepay/telecaller/view", "host": ["{{baseUrl}}"], "path": ["api","telepay","telecaller","view"] } } },
+        { "name": "View Telepay by ID", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/telepay/view/{{id}}", "host": ["{{baseUrl}}"], "path": ["api","telepay","view","{{id}}"], "variable": [{"key":"id","value":""}] } } },
+        { "name": "Get All Proofs", "request": { "method": "GET", "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ], "url": { "raw": "{{baseUrl}}/api/telepay/getallproof", "host": ["{{baseUrl}}"], "path": ["api","telepay","getallproof"] } } },
+        { "name": "Get Telepay Proofs by Lead ID", "request": { "method": "GET", "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ], "url": { "raw": "{{baseUrl}}/api/telepay/telecaller/{{leadId}}", "host": ["{{baseUrl}}"], "path": ["api","telepay","telecaller","{{leadId}}"], "variable": [{"key":"leadId","value":""}] } } },
+        { "name": "Get Telepay Proof by Lead ID and Proof ID", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/telepay/telecaller/{{leadId}}/{{proofId}}", "host": ["{{baseUrl}}"], "path": ["api","telepay","telecaller","{{leadId}}","{{proofId}}"], "variable": [{"key":"leadId","value":""},{"key":"proofId","value":""}] } } },
+        { "name": "Edit Telepay Proof", "request": { "method": "PUT", "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ], "body": { "mode": "formdata", "formdata": [ { "key": "image", "type": "file", "src": "" } ] }, "url": { "raw": "{{baseUrl}}/api/telepay/telecaller/edit/{{id}}", "host": ["{{baseUrl}}"], "path": ["api","telepay","telecaller","edit","{{id}}"], "variable": [{"key":"id","value":""}] } } },
+        { "name": "Delete Telepay Proof", "request": { "method": "DELETE", "url": { "raw": "{{baseUrl}}/api/telepay/telecaller/delete/{{id}}", "host": ["{{baseUrl}}"], "path": ["api","telepay","telecaller","delete","{{id}}"], "variable": [{"key":"id","value":""}] } } }
+      ]
+    },
+    {
+      "name": "Roles",
+      "item": [
+        { "name": "Add Role", "request": { "method": "POST", "header": [ { "key": "Content-Type", "value": "application/json" } ], "body": { "mode": "raw", "raw": "{\n  \"role\": \"\"\n}" }, "url": { "raw": "{{baseUrl}}/api/role/addroles", "host": ["{{baseUrl}}"], "path": ["api","role","addroles"] } } },
+        { "name": "Get Roles", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/role/getroles", "host": ["{{baseUrl}}"], "path": ["api","role","getroles"] } } },
+        { "name": "Edit Role", "request": { "method": "PUT", "header": [ { "key": "Content-Type", "value": "application/json" } ], "body": { "mode": "raw", "raw": "{\n  \"role\": \"\"\n}" }, "url": { "raw": "{{baseUrl}}/api/role/editroles/{{id}}", "host": ["{{baseUrl}}"], "path": ["api","role","editroles","{{id}}"], "variable": [{"key":"id","value":""}] } } },
+        { "name": "Delete Role", "request": { "method": "DELETE", "url": { "raw": "{{baseUrl}}/api/role/deleteroles/{{id}}", "host": ["{{baseUrl}}"], "path": ["api","role","deleteroles","{{id}}"], "variable": [{"key":"id","value":""}] } } }
+      ]
+    },
+    {
+      "name": "Notes",
+      "item": [
+        { "name": "Add Note", "request": { "method": "POST", "header": [ { "key": "Content-Type", "value": "application/json" } ], "body": { "mode": "raw", "raw": "{\n  \"leadId\": \"\",\n  \"text\": \"\"\n}" }, "url": { "raw": "{{baseUrl}}/api/notes/addnotes", "host": ["{{baseUrl}}"], "path": ["api","notes","addnotes"] } } },
+        { "name": "Update Note", "request": { "method": "PUT", "header": [ { "key": "Content-Type", "value": "application/json" } ], "body": { "mode": "raw", "raw": "{\n  \"text\": \"\"\n}" }, "url": { "raw": "{{baseUrl}}/api/notes/update/{{messageId}}", "host": ["{{baseUrl}}"], "path": ["api","notes","update","{{messageId}}"], "variable": [{"key":"messageId","value":""}] } } },
+        { "name": "Delete Note", "request": { "method": "DELETE", "url": { "raw": "{{baseUrl}}/api/notes/delete/{{messageId}}", "host": ["{{baseUrl}}"], "path": ["api","notes","delete","{{messageId}}"], "variable": [{"key":"messageId","value":""}] } } },
+        { "name": "Get All Notes for Lead", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/notes/allnotes/{{leadId}}", "host": ["{{baseUrl}}"], "path": ["api","notes","allnotes","{{leadId}}"], "variable": [{"key":"leadId","value":""}] } } },
+        { "name": "Get Note By ID", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/notes/note/{{id}}", "host": ["{{baseUrl}}"], "path": ["api","notes","note","{{id}}"], "variable": [{"key":"id","value":""}] } } }
+      ]
+    },
+    {
+      "name": "Notifications",
+      "item": [
+        { "name": "Get Admin Notifications", "request": { "method": "GET", "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ], "url": { "raw": "{{baseUrl}}/api/notifications", "host": ["{{baseUrl}}"], "path": ["api","notifications"] } } },
+        { "name": "Get Unread Count", "request": { "method": "GET", "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ], "url": { "raw": "{{baseUrl}}/api/notifications/unread-count", "host": ["{{baseUrl}}"], "path": ["api","notifications","unread-count"] } } },
+        { "name": "Mark Read (Admin)", "request": { "method": "POST", "header": [ { "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" } ], "body": { "mode": "raw", "raw": "{\n  \"ids\": []\n}" }, "url": { "raw": "{{baseUrl}}/api/notifications/mark-read", "host": ["{{baseUrl}}"], "path": ["api","notifications","mark-read"] } } },
+        { "name": "Mark Single Read (Admin)", "request": { "method": "POST", "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ], "url": { "raw": "{{baseUrl}}/api/notifications/mark-read/{{id}}", "host": ["{{baseUrl}}"], "path": ["api","notifications","mark-read","{{id}}"], "variable": [{"key":"id","value":""}] } } },
+        { "name": "Get Telecaller Notifications", "request": { "method": "GET", "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ], "url": { "raw": "{{baseUrl}}/api/notifications/telecaller", "host": ["{{baseUrl}}"], "path": ["api","notifications","telecaller"] } } },
+        { "name": "Mark Read (Telecaller)", "request": { "method": "POST", "header": [ { "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" } ], "body": { "mode": "raw", "raw": "{\n  \"ids\": []\n}" }, "url": { "raw": "{{baseUrl}}/api/notifications/telecaller/mark-read", "host": ["{{baseUrl}}"], "path": ["api","notifications","telecaller","mark-read"] } } },
+        { "name": "Create Test Notification", "request": { "method": "POST", "header": [ { "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" } ], "body": { "mode": "raw", "raw": "{}" }, "url": { "raw": "{{baseUrl}}/api/notifications/test-notification", "host": ["{{baseUrl}}"], "path": ["api","notifications","test-notification"] } } },
+        { "name": "Mark Single Read (Telecaller)", "request": { "method": "POST", "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ], "url": { "raw": "{{baseUrl}}/api/notifications/telecaller/mark-read/{{id}}", "host": ["{{baseUrl}}"], "path": ["api","notifications","telecaller","mark-read","{{id}}"], "variable": [{"key":"id","value":""}] } } }
+      ]
+    },
+    {
+      "name": "Attendance",
+      "item": [
+        { "name": "Telecaller Check-in", "request": { "method": "POST", "header": [ { "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" } ], "body": { "mode": "raw", "raw": "{}" }, "url": { "raw": "{{baseUrl}}/api/attendance/checkin", "host": ["{{baseUrl}}"], "path": ["api","attendance","checkin"] } } },
+        { "name": "Telecaller Check-out", "request": { "method": "POST", "header": [ { "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" } ], "body": { "mode": "raw", "raw": "{}" }, "url": { "raw": "{{baseUrl}}/api/attendance/checkout", "host": ["{{baseUrl}}"], "path": ["api","attendance","checkout"] } } },
+        { "name": "Telecaller Today Status", "request": { "method": "GET", "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ], "url": { "raw": "{{baseUrl}}/api/attendance/status", "host": ["{{baseUrl}}"], "path": ["api","attendance","status"] } } },
+        { "name": "Get Telecaller Attendance By Admin", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/attendance/admin/{{id}}", "host": ["{{baseUrl}}"], "path": ["api","attendance","admin","{{id}}"], "variable": [{"key":"id","value":""}] } } }
+      ]
+    },
+    {
+      "name": "Invoice",
+      "item": [
+        { "name": "Generate Invoice By Lead ID", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/invoice/invoice/{{leadId}}", "host": ["{{baseUrl}}"], "path": ["api","invoice","invoice","{{leadId}}"], "variable": [{"key":"leadId","value":""}] } } }
+      ]
+    },
+    {
+      "name": "Misc",
+      "item": [
+        { "name": "Get Amount (Cached)", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/getamount", "host": ["{{baseUrl}}"], "path": ["api","getamount"] } } }
+      ]
+    }
+  ],
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:9099", "type": "string" },
+    { "key": "token", "value": "", "type": "string" }
+  ]
+}
