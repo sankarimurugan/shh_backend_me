@@ -52,7 +52,16 @@ const registerAdmin = async (req, res) => {
     let imageName = null;
     if (req.file) {
       imageName = req.file.filename;
-      // Image already saved to /uploads by multer; do not move to /public to avoid EROFS
+      const imagePath = path.join(__dirname, "../public", imageName);
+
+      fs.rename(req.file.path, imagePath, (err) => {
+        if (err) {
+          console.error("Error saving image file", err);
+          return res
+            .status(500)
+            .json({ message: "Error saving the profile image" });
+        }
+      });
     }
 
     const newAdmin = new Admin({

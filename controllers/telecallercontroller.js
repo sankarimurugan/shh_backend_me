@@ -8,20 +8,6 @@ const fs = require("fs");
 const nodemailer = require("nodemailer");
 const BASE_URL = process.env.BASE_URL || "http://localhost:9099/";
 const { sendResponse } = require("../utils/responseHandler");
-const { v2: cloudinary } = require('cloudinary');
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
-  secure: true,
-});
-
-async function uploadToCloudinary(file, folder = 'telecallers') {
-  if (!file || !file.buffer) return null;
-  const base64 = `data:${file.mimetype};base64,${file.buffer.toString('base64')}`;
-  const result = await cloudinary.uploader.upload(base64, { folder });
-  return result.secure_url;
-}
 
 const addTelecaller = async (req, res) => {
   try {
@@ -46,14 +32,13 @@ const addTelecaller = async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    let imageUrl = null;
+    let imageName = null;
     if (req.file) {
-      try {
-        imageUrl = await uploadToCloudinary(req.file, 'telecallers');
-      } catch (e) {
-        console.error('Cloudinary upload failed:', e);
-        return res.status(500).json({ message: 'Image upload failed', error: e.message });
-      }
+      imageName = req.file.filename;
+      const imagePath = path.join(__dirname, "../public", imageName);
+
+      // Move the uploaded file to /public
+      await fs.promises.rename(req.file.path, imagePath);
     }
 
     const newTelecaller = new Telecaller({
@@ -62,12 +47,14 @@ const addTelecaller = async (req, res) => {
       phone,
       role,
       password: hashedPassword,
-      profileimage: imageUrl,
+      profileimage: imageName,
     });
 
     await newTelecaller.save();
 
-    const profileimageURL = imageUrl ? imageUrl : null;
+    const profileimageURL = imageName
+      ? `${process.env.BASE_URL}/public/${imageName}`
+      : null;
 
     res.status(201).json({
       message: "Staff added successfully",
@@ -126,7 +113,7 @@ const updateTelecallerByAdmin = async (req, res) => {
   try {
     const { name, email, phone, role, password, active } = req.body;
     const { id } = req.params;
-    const imageFile = req.file || null;
+    const image = req.file ? req.file.filename : null;
 
     const BASE_URL = process.env.BASE_URL || "http://localhost:9099";
 
@@ -145,19 +132,29 @@ const updateTelecallerByAdmin = async (req, res) => {
       updateData.active = active;
     }
 
-    if (imageFile) {
-      try {
-        const uploadedUrl = await uploadToCloudinary(imageFile, 'telecallers');
-        updateData.profileimage = uploadedUrl;
-      } catch (e) {
-        console.error('Cloudinary upload failed:', e);
-        return res.status(500).json({ message: 'Image upload failed', error: e.message });
+    if (image) {
+      updateData.profileimage = image;
+
+      // Delete old image
+      if (existingTelecaller.profileimage) {
+        const oldPath = path.join(__dirname, "../public", existingTelecaller.profileimage);
+        if (fs.existsSync(oldPath)) {
+          fs.unlinkSync(oldPath);
+        }
+      }
+
+      // Move new image
+      const newPath = path.join(__dirname, "../public", image);
+      if (req.file.path !== newPath) {
+        await fs.promises.rename(req.file.path, newPath);
       }
     }
 
     const updatedTelecaller = await Telecaller.findByIdAndUpdate(id, updateData, { new: true });
 
-    const profileimageUrl = updatedTelecaller.profileimage || null;
+    const profileimageUrl = updatedTelecaller.profileimage
+      ? `${BASE_URL}/public/${updatedTelecaller.profileimage}`
+      : null;
 
     res.json({
       message: "Telecaller updated successfully",
@@ -233,7 +230,7 @@ const loginTelecaller = async (req, res) => {
 
     const token = jwt.sign(
       {
-        id: telecaller._id.toString(),
+        id: telecaller._id.toString(),  // <-- use MongoDB ObjectId as string
         role: "Telecaller",
       },
       process.env.JWT_SECRET,
@@ -247,8 +244,9 @@ const loginTelecaller = async (req, res) => {
         email: telecaller.email,
         phone: telecaller.phone,
         role: telecaller.role,
-        active: telecaller.active,
-        profileimage: telecaller.profileimage || null,
+        active: telecaller.active, // Include active status in response
+        image: telecaller.image,
+        id: telecaller.id, // Add staff_id to response
         token,
       },
     });
