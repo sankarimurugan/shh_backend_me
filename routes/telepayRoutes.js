@@ -7,18 +7,10 @@ const { authMiddleware } = require('../middlewares/authmiddleware');
 const { handleMulterError } = require('../middlewares/multerErrorHandler');
 const router = express.Router();
 
-// Match the storage configuration with the controller
-const storage = multer.diskStorage({
-  destination: "./public", // Keep this as public
-  filename: (req, file, cb) => {
-    return cb(
-      null,
-      `${file.fieldname}_${Date.now()}${path.extname(file.originalname)}`
-    );
-  },
-});
+// Switch to memory storage to avoid writing to read-only filesystem
+const storage = multer.memoryStorage();
 
-// Configure multer with limits and file filtering like in the controller
+// Configure multer with limits and file filtering
 const upload = multer({
   storage: storage,
   limits: {

@@ -14,15 +14,8 @@ const router = express.Router()
 
 
 
-const storage = multer.diskStorage({
-    destination: "./uploads",
-    filename: (req, file, cb) => {
-        return cb(
-            null,
-            `${file.fieldname}_${Date.now()}${path.extname(file.originalname)}`
-        );
-    },
-});
+// Use memory storage to avoid writing to the filesystem on serverless (e.g., Vercel)
+const storage = multer.memoryStorage();
 const upload = multer({
     storage: storage,
 });
