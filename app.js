@@ -2,6 +2,7 @@ const connectDB = require("./config/db");
 const express = require("express");
 const cors = require("cors");
 const session = require("express-session");
+const MongoStore = require("connect-mongo");
 const path = require("path");
 require("dotenv").config();
 const leadmanageRoutes = require("./routes/leadmanageRoutes");
@@ -32,6 +33,9 @@ connectDB();
 // Initialize express app
 const app = express();
 
+// Trust proxy to correctly set secure cookies behind Vercel/Netlify/CDN
+app.set('trust proxy', 1);
+
 // Configure CORS properly with specific options
 // Build a robust whitelist that supports localhost and your domains
 const envOrigins = (process.env.CORS_ORIGINS || "")
@@ -39,13 +43,13 @@ const envOrigins = (process.env.CORS_ORIGINS || "")
   .map((o) => o.trim())
   .filter(Boolean);
 const defaultAllowedOrigins = [
+  "https://shhcrmtelecallers.netlify.app",
   "http://localhost:3000",
   "http://localhost:3001",
   "http://127.0.0.1:3000",
   "http://127.0.0.1:3001",
   "http://localhost:5173", // Vite default
   "http://localhost:4200", // Angular default
-  "https://shhcrmtelecallers.netlify.app",
 ];
 const allowedOrigins = Array.from(new Set([...defaultAllowedOrigins, ...envOrigins]));
 
@@ -65,6 +69,7 @@ const corsOptions = {
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
   optionsSuccessStatus: 204,
+  allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
 };
 
 app.use(cors(corsOptions));
@@ -73,6 +78,10 @@ app.options("*", cors(corsOptions));
 
 // Security and optimization middleware
 app.use(helmet());
+// Configure Helmet to allow cross-origin resource loading (images/files) when serving static assets
+app.use(helmet({
+  crossOriginResourcePolicy: { policy: 'cross-origin' },
+}));
 app.use(compression());
 app.use(express.json());
 // Remove duplicate CORS middleware
@@ -88,6 +97,12 @@ app.use("/api/", limiter);
 // Session configuration
 app.use(
   session({
+    store: MongoStore.create({
+      mongoUrl: process.env.MONGO_URI,
+      collectionName: "sessions",
+      ttl: 14 * 24 * 60 * 60, // 14 days
+      autoRemove: "native",
+    }),
     secret: process.env.JWT_SECRET,
     resave: false,
     saveUninitialized: false,
@@ -101,9 +116,9 @@ app.use(
 );
 
 // Static files
-app.use("/public", express.static(path.join(__dirname, "public")));
-// Add this line after the public static files middleware
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+ app.use("/public", express.static(path.join(__dirname, "public")));
+ // Add this line after the public static files middleware
+ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // Routes
 // Routes
@@ -123,11 +138,12 @@ app.use("/api/notes", noteRoutes);
 app.use("/api/leads", leadRoutes);
 app.use("/api/attendance", attendancerRoutes);
 // Add notification routes here, with the other routes
-app.use("/api/notifications", notificationRoutes);
+ app.use("/api/notifications", notificationRoutes);
 app.use('/public', express.static(path.join(__dirname, 'public')));
+// Removed duplicate static middleware for /public to avoid redundancy
 
 // Add compression
-app.use(compression());
+// app.use(compression()); // Removed duplicate compression, already added above
 
 // Add caching middleware
 const cacheMiddleware = (duration) => {
@@ -190,6 +206,4 @@ app.use((req, res) => {
     message: "Route not found",
   });
 });
-// Add notification routes
-app.use("/api/notifications", notificationRoutes);
 module.exports = app;
